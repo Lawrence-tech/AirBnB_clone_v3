@@ -75,6 +75,19 @@ class DBStorage:
              None if not found"""
         return self.__session.query(cls).filter(cls.id == id).first()
 
+    def count(self, cls=None):
+        """count the number of objects in storage
+        Args:
+            cls:class (optional)
+
+        Return:
+             number of objects in storage matching the given class.
+             If no class is passed, returns the count of all objects
+             in storage."""
+        if cls is None:
+            return len(self.all())
+        return len(self.all(cls))
+
     def reload(self):
         """reloads data from the database"""
         Base.metadata.create_all(self.__engine)
