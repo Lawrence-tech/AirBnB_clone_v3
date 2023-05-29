@@ -58,7 +58,7 @@ class FileStorage:
              the object based on the class and its ID, or
              None if not found"""
         for item in self.__objects.values():
-            if item.__class__ == cls and item.id = id:
+            if item.__class__ == cls and item.id == id:
                 return item
         return None
 
