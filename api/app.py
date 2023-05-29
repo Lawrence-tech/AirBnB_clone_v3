@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""module app.prepare flask app"""
 import os
 from flask import Flask
 from models import storage
