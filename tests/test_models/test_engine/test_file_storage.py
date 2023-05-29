@@ -132,7 +132,7 @@ class TestFileStorage(unittest.TestCase):
         """Test that count method works. By new adding object to file"""
         storage = FileStorage()
         start_length = len(storage.all())
-        self.asserEqual(storage.count(), start_length)
+        self.assertEqual(storage.count(), start_length)
         state_length = len(storage.all("State"))
         self.assertEqual(storage.count("State"), state_length)
         # test object
