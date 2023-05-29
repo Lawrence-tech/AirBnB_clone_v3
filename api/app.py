@@ -9,11 +9,13 @@ app = Flask(__name__)
 # Register the blueprint
 app.register_blueprint(app_views)
 
+
 # Register the teardown handler
 @app.teardown_appcontext
 def teardown_handler(exception=None):
     """Teardown method to handle storage.close"""
     storage.close()
+
 
 if __name__ == "__main__":
     # set host and port based on environment variables or defaults
