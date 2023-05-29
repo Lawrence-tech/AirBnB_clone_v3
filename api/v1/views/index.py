@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """index module returns a JSON: "status": 'Ok'"""
+from flask import jsonify, Blueprint
 from api.v1.views import app_views
-from flask import jsonify
 
 
 # Define a route /status on app_views blueprint
