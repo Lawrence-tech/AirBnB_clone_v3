@@ -10,13 +10,15 @@ def status():
     """returns a JSON: "status": 'OK'"""
     return jsonify({"status": "OK"})
 
-@app_views.route("/stats")
-def obj_stats():
-    objs = {"amenities": storage.count("Amenity"),
+
+# Route: /api/v1/stats
+@app_views.route('/stats', methods=['GET'], strict_slashes=False)
+def objects_stats():
+    """an endpoint that retrieves the number of each objects by type"""
+    objects = {"amenities": storage.count("Amenity"),
             "cities": storage.count("City"),
             "places": storage.count("Place"),
             "reviews": storage.count("Review"),
             "states": storage.count("State"),
             "users": storage.count("User")}
-    return jsonify(objs)
-
+    return jsonify(objects)
