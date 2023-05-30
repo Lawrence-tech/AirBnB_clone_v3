@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 """states module.Handles States RESTFul API actions"""
-from flask import jsonify, Blueprint
+from flask import jsonify, Blueprint, request, abort
 from api.v1.views import app_views
 from models import storage
+from models.state import State
 
 
 @app_views.route('/states', methods=['GET'], strict_slashes=False)
@@ -34,3 +35,16 @@ def delete_state(state_id):
         return jsonify({}), 200
     else:
         abort(404)
+
+
+@app_views.route('/states', methods=['POST'], strict_slashes=False)
+def create_state():
+    """Creates a State Object"""
+    if not request.json:
+        return jsonify({'error': 'Not a JSON'}), 400
+    if 'name' not in request.json:
+        return jsonify({'error': 'Missing name'}), 400
+    post_data = request.get_json()
+    new_state = State(**post_data)
+    new_state.save()
+    return jsonify(new_state.to_dict()), 201
