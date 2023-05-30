@@ -12,3 +12,12 @@ def get_states():
     states = [state.to_dict() for state in states]
     return jsonify(states)
 
+
+@app_views.route('/states/<state_id>', methods=['GET'], strict_slashes=False)
+def get_state(state_id):
+    """Retives a state object based on id"""
+    state = storage.get("State", state_id)
+    if state:
+        return jsonify(state.to_dict())
+    else:
+        abort(404)
