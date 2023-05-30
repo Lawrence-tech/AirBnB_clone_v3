@@ -60,7 +60,7 @@ def update_user(user_id):
         if not request.json:
             return jsonify({'error': 'Not a JSON'}), 400
         put_data = request.get_json()
-        ignore_keys = ['id', 'created_at', 'updated_at']
+        ignore_keys = ['id', 'email', 'created_at', 'updated_at']
         for k, v in put_data.items():
             if k not in ignore_keys:
                 setattr(user, k, v)
