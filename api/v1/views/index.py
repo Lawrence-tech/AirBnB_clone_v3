@@ -4,6 +4,7 @@ from flask import jsonify, Blueprint
 from api.v1.views import app_views
 from models import storage
 
+
 # Define a route /status on app_views blueprint
 @app_views.route('/status', methods=['GET'], strict_slashes=False)
 def status():
@@ -16,9 +17,9 @@ def status():
 def objects_stats():
     """an endpoint that retrieves the number of each objects by type"""
     objects = {"amenities": storage.count("Amenity"),
-            "cities": storage.count("City"),
-            "places": storage.count("Place"),
-            "reviews": storage.count("Review"),
-            "states": storage.count("State"),
-            "users": storage.count("User")}
+               "cities": storage.count("City"),
+               "places": storage.count("Place"),
+               "reviews": storage.count("Review"),
+               "states": storage.count("State"),
+               "users": storage.count("User")}
     return jsonify(objects)
