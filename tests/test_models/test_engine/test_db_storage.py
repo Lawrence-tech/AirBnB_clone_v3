@@ -117,3 +117,21 @@ class TestDBStorage(unittest.TestCase):
         test_user.save()
         self.assertEqual(models.storage.count("State"), start_count + 1)
         self.assertEqual(models.storage.count(), start_count + 2)
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_all_no_class(self):
+        """Test that all returns all rows when no class is passed"""
+        # Create some test objects
+    state1 = State(name='State 1')
+    state2 = State(name='State 2')
+    state1.save()
+    state2.save()
+
+    # get all objects without specifying a class
+    objects = models.storage.all()
+
+    # assert that both states are present in the objects dictionary
+    self.assertIn(state1.id, objects)
+    self.assertIn(state2.id, objects)
+    self.assertEqual(objects[state1.id], state1)
+    self.assertEqual(objects[state2.id], state2)
