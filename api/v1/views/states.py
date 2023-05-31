@@ -62,7 +62,7 @@ def update_state(state_id):
         for k, v in put_data.items():
             if k not in ignore_keys:
                 setattr(state, k, v)
-        state.save()
-        return jsonify({state.to_dict()}), 200
+                storage.save()
+        return jsonify(state.to_dict()), 200
     else:
         abort(404)
