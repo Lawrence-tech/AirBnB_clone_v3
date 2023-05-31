@@ -7,7 +7,8 @@ from models.city import City
 from models.place import Place
 
 
-@app_views.route('/cities/<city_id>/places', methods=['GET'], strict_slashes=False)
+@app_views.route('/cities/<city_id>/places', methods=['GET'],
+                 strict_slashes=False)
 def get_city_places(city_id):
     """Retrieves the list of all Place objects of a City"""
     city = storage.get("City", city_id)
@@ -16,7 +17,7 @@ def get_city_places(city_id):
     val = []
     for place in city.places:
         val.append(place.to_dict())
-    return jsonify(places)        
+    return jsonify(places)
 
 
 @app_views.route('/places/<place_id>', methods=['GET'], strict_slashes=False)
@@ -42,14 +43,15 @@ def delete_place(place_id):
         abort(404)
 
 
-@app_views.route('/cities/<city_id>/places', methods=['POST'], strict_slashes=False)
+@app_views.route('/cities/<city_id>/places', methods=['POST'],
+                 strict_slashes=False)
 def create_place():
     """Creates a Place Object"""
     city = storage.get('City', city_id)
     if city is None:
         abort(404)
     post_data = request.get_json()
-    if post_data is None:
+    if post_data is None or type(post_data) != dict:
         abort(400, "Not a JSON")
     user_id = post_data.get('user_id')
     if user_id is None:
@@ -67,10 +69,22 @@ def create_place():
     return jsonify(place.to_dict()), 201
 
 
-@app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
-def update_state(state_id):
-    """Updates a State object"""
-    state = storage.get("State", state_id)
+@app_views.route('/places/<place_id>', methods=['PUT'], strict_slashes=False)
+def update_place(place_id):
+    """Updates a Place object"""
+    place = storage.get("Place", place_id)
+    if place is None:
+        abort(404)
+    put_data = storage.get_json()
+    if put_data is None or type(put_data) != dict:
+        abort(400, "Not a JSON")
+
+    ignored_keys = ['id', 'user_id', 'city_id', 'created_at', 'updated_at']
+    for key, value in put_data.items():
+        if key not in ignored_keys:
+            setattr(place, key, value)
+            storage.save()
+    return jsonify(place.to_dict()), 200
     if state:
         if not request.json:
             return jsonify({'error': 'Not a JSON'}), 400
@@ -81,5 +95,3 @@ def update_state(state_id):
                 setattr(state, k, v)
         state.save()
         return jsonify({state.to_dict()}), 200
-    else:
-        abort(404)
